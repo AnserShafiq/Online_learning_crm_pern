@@ -1,5 +1,6 @@
 import pkg from 'pg';
-
+import dotenv from "dotenv";
+dotenv.config();
 export const connectDB = async() => {
     const { Client } = pkg
     try{
@@ -10,11 +11,12 @@ export const connectDB = async() => {
             password:process.env.DB_PASSWORD,
             database:process.env.DB_DATABASE,
         })
-        client.connect().then(() => {
+        await client.connect().then(() => {
             console.log('Connected to the database: ', process.env.DB_DATABASE)
         })
-
+        return client
     }catch{
+        console.log('Unable to connect to the database')
         console.error('Error connecting to the database')
     }
 }
