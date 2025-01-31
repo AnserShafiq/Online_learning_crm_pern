@@ -1,8 +1,20 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Home from "./pages/home"
 import Navbar from "./component/Navbar"
+import Signin from "./pages/signin"
+import { useUserStore } from "./stores/useUserStore"
+import { useEffect } from "react"
 
 const App = () => {
+
+  const {user, checkAuth } = useUserStore();
+
+  useEffect(() => {
+    checkAuth()
+  },[checkAuth])
+
+  console.log('User from App.jsx:',user)
+
   return (
 <div className='min-h-screen bg-gray-900 text-white relative overflow-hidden'>
 			{/* Background gradient */}
@@ -16,6 +28,7 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/signin' element={!user? <Signin />: <Navigate to='/'/>} />
         </Routes>
       </div>
     </div>
