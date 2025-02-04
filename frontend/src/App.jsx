@@ -11,10 +11,9 @@ const App = () => {
   const {user, checkAuth } = useUserStore();
 
   useEffect(() => {
+    console.log('Going to check auth')
     checkAuth()
   },[checkAuth])
-
-  console.log('User from App.jsx:',user)
 
   return (
 <div className='min-h-screen bg-gray-900 text-white relative overflow-hidden'>

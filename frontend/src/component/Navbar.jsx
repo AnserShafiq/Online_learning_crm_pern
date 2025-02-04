@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useUserStore } from "../stores/useUserStore"
-
-
+import {LogIn} from 'lucide-react'
+ 
 const Navbar = (user) => {
     const {logout} = useUserStore()
     if(user.user !== null){
@@ -15,21 +15,30 @@ const Navbar = (user) => {
                     Shopkart
                 </Link>
                 <nav className="flex flex-wrap items-center space-x-4">
-                    <Link to={'/'} className="text-gray-300 hover:text-emerald-400 transition duration-300 ease-in-out">
-                        Home
-                    </Link>
-                    <Link to={'/signin'} className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out">
-                        Sign In
-                    </Link>
                     {
                         user.user !== null? (
-                            <button onClick={() => {
-                                logout()
-                            }}>Logout</button>
+                            <>
+                                <Link to={'/'} className="text-gray-300 hover:text-emerald-400 transition font-semibold duration-300 ease-in-out">
+                                    Home
+                                </Link>
+                                <button className="
+                                text-emerald-600 hover:text-gray-300 bg-transparent border-2 font-[500] border-emerald-600 hover:border-gray-300 py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out
+                                " onClick={() => {
+                                    logout()
+                                }}>
+                                    <LogIn className="mr-2 h-5"/> Logout 
+                                </button>
+                            </>
+                            
                         ):(
-                            <Link to={'/login'} className="text-emerald-600 hover:text-gray-300 bg-transparent border-2 font-semibold border-emerald-600 hover:border-gray-300 py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out">
-                            Log In
-                            </Link>
+                            <>
+                                <Link to={'/signin'} className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out">
+                                    Sign In
+                                </Link>
+                                <Link to={'/login'} className="text-emerald-600 hover:text-gray-300 bg-transparent border-2 font-semibold border-emerald-600 hover:border-gray-300 py-2 px-4 rounded-md flex items-center transition duration-300 ease-in-out">
+                                Log In
+                                </Link>
+                            </>
                         )
                     }
                 </nav>

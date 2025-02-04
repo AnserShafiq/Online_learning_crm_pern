@@ -10,7 +10,7 @@ export const useUserStore = create((set) => ({
         set({loading:true});
         const dataTwo = Object.fromEntries(data.entries()); 
         dataTwo.assigned = [...data.getAll("assigned")]; 
-        console.log('Data From User Store=> ',dataTwo)
+        // console.log('Data From User Store=> ',dataTwo)
         try{
             const response = await fetch('http://localhost:4600/new-user',{
                 method:'POST',
@@ -25,7 +25,7 @@ export const useUserStore = create((set) => ({
                 throw new Error('Failed to submit form, ',response)
             }
             const responseData = await response.json();
-            console.log('Success:',responseData.token)
+            // console.log('Success:',responseData.token)
             set({user: responseData, loading:false})
         }catch(error){
             console.error('Error:',error)
@@ -34,7 +34,7 @@ export const useUserStore = create((set) => ({
     login:async(data)=>{
         set({loading:true});
         const dataTwo = Object.fromEntries(data.entries()); 
-        console.log('Data From User Store=> ',dataTwo)
+        // console.log('Data From User Store=> ',dataTwo)
         try{
             const response = await fetch('http://localhost:4600/login',{
                 method:'POST',
@@ -49,7 +49,7 @@ export const useUserStore = create((set) => ({
                 throw new Error('Failed to submit form, ',response)
             }
             const responseData = await response.json();
-            console.log('Success:',responseData.token)
+            // console.log('Success:',responseData.token)
             set({user: responseData, loading:false})
         }catch(error){
             console.error('Error:',error)
@@ -66,7 +66,7 @@ export const useUserStore = create((set) => ({
 
             const responseData = await response.json()
 
-            console.log('Frontend => ',responseData)
+            // console.log('Frontend => ',responseData)
             if(response.ok){
                 set({checkingAuth: false, user:responseData})
             }

@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, CircleUser, Lock, LogIn } from 'lucide-react'
+import { ArrowRight, CircleUser, Loader, Lock, LogIn } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../stores/useUserStore'
 
 const Login = () => {
-    const {login} = useUserStore()
+    const {login, loading} = useUserStore()
     const handleSubmission = (e) => {
         e.preventDefault()
         const formData= new FormData(e.target)
@@ -49,9 +49,20 @@ const Login = () => {
                 </div>
                 
             </div>
-            <button type="submit" className='w-full flex items-center justify-center rounded-md py-2 bg-emerald-700 text-sm'>
-                <LogIn className='mr-2 h-5 w-5' aria-hidden='true'/>
-                Log In
+            <button type="submit" disabled={loading} className='w-full flex items-center justify-center rounded-md py-2 bg-emerald-700 text-sm'>
+                {
+                    loading ? (
+                        <>
+                            <Loader className='mr-2 h-5 w-5 animate-spin' aria-hidden='true'/>
+                            Loading...
+                        </>
+                    ):(
+                        <>
+                        <LogIn className='mr-2 h-5 w-5' aria-hidden='true'/>
+                            Log In
+                        </>
+                    )
+                }
             </button>
             <div className='flex justify-center mt-8 mb-10'>
                 <h3 className='text-sm text-gray-400'>Not a member? <Link to={'/signin'} className='text-emerald-600 inline-flex hover:border-b hover:border-emerald-600 hover:text-gray-300'>Sign up now <ArrowRight className='h-4 my-auto'/></Link></h3>
