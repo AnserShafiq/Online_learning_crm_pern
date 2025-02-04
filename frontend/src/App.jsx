@@ -4,6 +4,7 @@ import Navbar from "./component/Navbar"
 import Signin from "./pages/signin"
 import { useUserStore } from "./stores/useUserStore"
 import { useEffect } from "react"
+import Login from "./pages/login"
 
 const App = () => {
 
@@ -25,9 +26,10 @@ const App = () => {
 			</div>
 
 			<div className='relative z-50 pt-20'>
-        <Navbar />
+        <Navbar user={user}/>
         <Routes>
           <Route path='/' element={<Home />} />
+          <Route path='/login' element={!user? <Login />: <Navigate to='/'/>} />
           <Route path='/signin' element={!user? <Signin />: <Navigate to='/'/>} />
         </Routes>
       </div>

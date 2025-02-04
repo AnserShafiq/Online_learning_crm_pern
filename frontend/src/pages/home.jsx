@@ -10,7 +10,7 @@ const Home = () => {
       <h3 className="text-3xl text-specialColor">Website&apos;s Home</h3>
       {
         user && <>
-          <h3>Welcome User{user.name}</h3>
+          <h3>Welcome User {user.name}</h3>
         </>
       }
     </div>
