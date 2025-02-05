@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import newUserCreation from "./routes/newusercreation.route.js";
+import managersData from './routes/managers.route.js'
 import {connectDB}  from "./lib/db.js";
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 connectDB()
 
 app.use("/", newUserCreation);
+app.use('/managers', managersData);
 
 // app.post('/new-user', signup);
 

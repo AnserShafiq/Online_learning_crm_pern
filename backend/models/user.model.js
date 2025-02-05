@@ -8,5 +8,6 @@ export const User = {
     contact_number: String,
     manager_id: String,
     company_name: String,
+    user_type:String
 }
 

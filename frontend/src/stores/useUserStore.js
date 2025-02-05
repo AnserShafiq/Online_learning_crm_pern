@@ -25,7 +25,7 @@ export const useUserStore = create((set) => ({
                 throw new Error('Failed to submit form, ',response)
             }
             const responseData = await response.json();
-            // console.log('Success:',responseData.token)
+            // console.log('Success:',responseData)
             set({user: responseData, loading:false})
         }catch(error){
             console.error('Error:',error)

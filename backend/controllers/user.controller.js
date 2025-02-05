@@ -65,8 +65,8 @@ export const signup = async (req, res) => {
         const decryptedPassword = bcrypt.hashSync(UserProfile.password, 10);
 
         await db.query(
-            'INSERT INTO AGENTS(agent_id, name, gender, email, assigned_company, manager_id, password, created_on) VALUES($1,$2,$3,$4,$5,$6,$7,NOW());',
-            [userId, UserProfile.name, UserProfile.gender, UserProfile.email, UserProfile.assigned, UserProfile.manager, decryptedPassword]
+            'INSERT INTO AGENTS(agent_id, name, gender, email, assigned_company, manager_id, password, created_on, user_type) VALUES($1,$2,$3,$4,$5,$6,$7,NOW(),$8);',
+            [userId, UserProfile.name, UserProfile.gender, UserProfile.email, UserProfile.assigned, UserProfile.manager, decryptedPassword,UserProfile.usertype]
         );
 
         const { accessToken, refreshToken } = generateTokens(userId);
@@ -80,6 +80,14 @@ export const signup = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+export const adminSignUp = async(req,res) => {
+    try{
+
+    }catch(err){
+
+    }
+}
 
 export const logIn = async (req, res) => {
     const db = await connectDB();
@@ -138,20 +146,6 @@ export const getUserProfile = async (req, res) => {
     }
 }
 
-// API to refresh token
-// export const refreshAccessToken = (req, res) => {
-//     const refreshToken = req.cookies.refreshToken;
-//     if (!refreshToken) return res.status(401).json({ message: "Unauthorized: No refresh token" });
-
-//     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
-//         if (err) return res.status(403).json({ message: "Unauthorized: Invalid refresh token" });
-
-//         const { accessToken, refreshToken: newRefreshToken } = generateTokens(decoded.userId);
-//         setCookies(res, accessToken, newRefreshToken);
-
-//         return res.status(200).json({ accessToken });
-//     });
-// };
 
 // Logout API to clear cookies
 export const logout = (req, res) => {

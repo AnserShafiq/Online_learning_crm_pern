@@ -21,7 +21,7 @@ const Login = () => {
             <h3 className='mx-auto text-center text-3xl font-extrabold text-emerald-400 capitalize'>To get Logged In</h3>
         </motion.div>
         <motion.div
-        className=' mt-8 py-10 px-10 rounded-xl bg-gray-800 px-4 w-[500px] mx-auto'
+        className=' mt-8 py-10 px-10 rounded-xl bg-gray-800 w-[500px] mx-auto'
         initial={{opacity:0,y:30}}
         animate={{opacity:1,y:0}}
         transition={{duration: 0.75, delay:0.3}}
