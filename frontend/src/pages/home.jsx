@@ -12,7 +12,7 @@ const Home = () => {
       <h3 className="text-3xl text-specialColor">Website&apos;s Home</h3>
       {
         user && <>
-          <h3>Welcome User {user.name}, {user.user_type}</h3>
+          <h3 className="capitalize">Welcome User {user.name}, {user.user_type}</h3>
         </>
       }
     </div>

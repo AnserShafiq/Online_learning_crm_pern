@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, CircleUser, Loader, Lock, LogIn } from 'lucide-react'
+import { ArrowRight, CircleUser, CircleX, Loader, Lock, LogIn } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useUserStore } from '../stores/useUserStore'
 
 const Login = () => {
-    const {login, loading} = useUserStore()
+    const {login, loading,error} = useUserStore()
     const handleSubmission = (e) => {
         e.preventDefault()
         const formData= new FormData(e.target)
@@ -49,6 +49,7 @@ const Login = () => {
                 </div>
                 
             </div>
+            {error && <h3 className='text-red-500 text-md inline-flex items-center' ><CircleX className='h-4' />{error}</h3>}
             <button type="submit" disabled={loading} className='w-full flex items-center justify-center rounded-md py-2 bg-emerald-700 text-sm'>
                 {
                     loading ? (

@@ -4,13 +4,15 @@ import { create } from 'zustand';
 export const useUserStore = create((set) => ({
     user:null,
     loading: false,
+    error:null,
     checkingAuth: true,
     
     signup: async(data)=>{
         set({loading:true});
         const dataTwo = Object.fromEntries(data.entries()); 
         dataTwo.assigned = [...data.getAll("assigned")]; 
-        // console.log('Data From User Store=> ',dataTwo)
+        dataTwo.companies = [...data.getAll("companies")]
+        console.log('Data From User Store=> ',dataTwo)
         try{
             const response = await fetch('http://localhost:4600/new-user',{
                 method:'POST',
@@ -25,7 +27,7 @@ export const useUserStore = create((set) => ({
                 throw new Error('Failed to submit form, ',response)
             }
             const responseData = await response.json();
-            // console.log('Success:',responseData)
+            console.log('Success:',responseData)
             set({user: responseData, loading:false})
         }catch(error){
             console.error('Error:',error)
@@ -46,6 +48,7 @@ export const useUserStore = create((set) => ({
             })
             if(!response.ok){
                 console.log(response)
+                set({loading:false, error: 'Invalid username or password'})
                 throw new Error('Failed to submit form, ',response)
             }
             const responseData = await response.json();

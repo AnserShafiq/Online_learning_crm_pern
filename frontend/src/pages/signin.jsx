@@ -4,17 +4,29 @@ import {Building2, LockKeyholeOpen, Mail, Shapes, User, UserPlus, Users} from 'l
 import { useUserStore } from '../stores/useUserStore.js'
 import { useGetData } from '../stores/useGetData.js';
 const Signin = () => {
-    const {managersList, gettingManagers} = useGetData();
+    const {
+        managersList,
+        companiesList, 
+        gettingManagers, 
+        gettingHeadManagers, 
+        gettingCompanies
+    } = useGetData();
     const [usertype, setUserType] = useState('')
     const {signup} = useUserStore();
 
     useEffect(()=> {
-        gettingManagers()
+        if(usertype === 'Sale Manager'){
+            gettingHeadManagers()
+        }else if(usertype === 'Head Manager'){
+            gettingCompanies()
+        }else{
+            gettingManagers()
+        }
     },
-    [gettingManagers])
-    console.log('==> ', managersList)
+    [gettingManagers,gettingHeadManagers, usertype,gettingCompanies])
     const userTypes = [
         'Sale Agent',
+        'Head Manager',
         'Sale Manager',
         'Graphic Designer',
         'Accountant',
@@ -47,12 +59,12 @@ const Signin = () => {
         <form onSubmit={handleSubmission} className="space-y-6">
             <div className="flex flex-col">
                 
-                <label className='block text-sm font-medium text-gray-300'>Agent&apos;s Name</label>
+                <label className='block text-sm font-medium text-gray-300'>User&apos;s Name</label>
                 <div className='relative rounded-md shadow-sm '>
                     <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
                         <User className='h-5 w-5 text-gray-400'/>
                     </div>
-                    <input className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" type='text' placeholder="Agent's Name..." name='name' id='name' required/>
+                    <input className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" type='text' placeholder="User's Name..." name='name' id='name' required/>
                 </div>
                 
             </div>
@@ -108,20 +120,41 @@ const Signin = () => {
             </div>
 
             {
-                usertype === 'Sale Manager' ? (
+                usertype === 'Head Manager' ? (
                     <>
                         <div className="flex flex-col relative rounded-md shadow-sm">
                             <label className='block text-sm font-medium text-gray-300'>Company/+ies to allot</label>
-                            <div className='grid grid-cols-[1fr,1fr,1fr] text-black block w-full py-2 px-4 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500'>
-                                <label className='flex items-start cursor-pointer my-1'><input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id='companies' value={'Unique Employment'} /> <span className='ml-2'>Unique Employment</span></label>
-                                <label className='flex items-start cursor-pointer my-1'><input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id='companies' value={'Talent Avenue'} /> <span className='ml-2'>Talent Avenue</span></label>
-                                <label className='flex items-start cursor-pointer my-1'><input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id='companies' value={'Global HR'} /> <span className='ml-2'>Global HR</span></label>
-                                <label className='flex items-start cursor-pointer my-1'><input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id='companies' value={'Perfect HR'} /> <span className='ml-2'>Perfect HR</span></label>
-                                <label className='flex items-start cursor-pointer my-1'><input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id='companies' value={'NA Security'} /> <span className='ml-2'>NA Security</span></label>
-                                <label className='flex items-start cursor-pointer my-1'><input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id='companies' value={'NA Staffing'} /> <span className='ml-2'>NA Staffing</span></label>
+                            <div className='w-full py-2 px-4 bg-gray-700 rounded-md shadow-md mt-1'>
+                                {
+                                     Array.isArray(companiesList) && companiesList.length >0 ? (
+                                        <div className='grid grid-cols-[1fr,1fr,1fr] text-gray-200 w-full'>
+                                            {companiesList.map((company) => (
+
+                                            <label key={company.company_id} className='flex items-start cursor-pointer my-1'>
+                                                <input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id={company.company_id} value={company.company_id} /> 
+                                                <span className='ml-2'>
+                                                    {company.name}
+                                                </span>
+                                            </label>        
+                                            ))}
+                                        </div>
+                                        ):(
+                                        <h3 className=' text-gray-400'>No Company Available</h3>
+                                    )
+                                }
                             </div>  
-                        </div>          
+                        </div>
                         <div className="flex flex-col relative rounded-md shadow-sm">
+                            <label className='block text-sm font-medium text-gray-300'>Contact Number</label>
+                            <div className='relative rounded-md shadow-sm '>
+                                <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                                    <LockKeyholeOpen className='h-5 w-5 text-gray-400'/>
+                                </div>
+                                <input className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" type='tel' placeholder="Contact number..." name='contact_number' id='contact_number' required/>
+                            </div>
+                            
+                        </div>          
+                        {/* <div className="flex flex-col relative rounded-md shadow-sm">
                             <label className='block text-sm font-medium text-gray-300'>Head Manager</label>
                             <div className='relative rounded-md shadow-sm '>
                                 <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
@@ -136,14 +169,14 @@ const Signin = () => {
                                 }
                                 </select>
                             </div>    
-                        </div>
+                        </div> */}
                     </>      
                 ) : (
                     null
                 )
             }
             {
-                usertype !== 'Sale Manager' && usertype !== '' ? (
+                usertype !== 'Head Manager' && usertype !== '' ? (
                     <>
                         <div className="flex flex-col relative rounded-md shadow-sm">
                             <label className='block text-sm font-medium text-gray-300'>Manager</label>
@@ -152,10 +185,10 @@ const Signin = () => {
                                     <Users className='h-5 w-5 text-gray-400'/>
                                 </div>
                                 <select name="manager" className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="manager" required>
-                                <option value={''} disabled selected>Select Manager</option>
+                                <option value={''} key={'null'} disabled selected>Select Manager</option>
                                 {
-                                    managersList && Array.isArray(managersList) ? managersList.map((manager) =>(
-                                        <option value={manager.manager_id} key={manager.manager_id}>{manager.name}</option>
+                                    managersList && Array.isArray(managersList) ? managersList.map((manager,index) =>(
+                                        <option key={index} value={manager.manager_id} >{manager.name}</option>
                                     ) ): null
                                 }
                                 </select>
@@ -167,7 +200,7 @@ const Signin = () => {
                                 <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
                                     <Building2 className='h-5 w-5 text-gray-400'/>
                                 </div>
-                                <select name='assigned' className="text-black block w-full py-2 px-3 pl-10 bg-gray-700  text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="gender" required>
+                                <select name='assigned' className="text-black block w-full py-2 px-3 pl-10 bg-gray-700  text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="assigned" >
                                     <option value={''} disabled selected>Select Option</option>
                                     <option value={'One'}>One</option>
                                     <option value={'Two'}>Two</option>
