@@ -52,7 +52,7 @@ export const signup = async (req, res) => {
             const userCheck = await db.query('SELECT * FROM MANAGERS WHERE email=$1', [UserProfile.email]);
 
             if (userCheck.rowCount > 0) {
-                return res.status(401).json({ message: 'Email already in use' });
+                return res.status(401).json({ message: 'Email already in use', reason: 'Email' });
             }
             const users = await db.query('SELECT * FROM MANAGERS');
             for (let i = users.rowCount; idCheck === false; i++) {
@@ -79,10 +79,22 @@ export const signup = async (req, res) => {
             if (userCheck.rowCount > 0) {
                 return res.status(401).json({ message: 'Email already in use' });
             }
+            let shortForm;
+            if(UserProfile.usertype === 'Sale Manager'){
+                shortForm='SM'
+            }else if(UserProfile.usertype === 'Sale Agent'){
+                shortForm = 'AG'
+            }else if(UserProfile.usertype === 'Graphic Designer'){
+                shortForm = 'GD'
+            }else if(UserProfile.usertype === 'Clerk'){
+                shortForm = 'CK'
+            }else if(UserProfile.usertype === 'Accountant'){
+                shortForm = 'AT'
+            }
             const users = await db.query('SELECT * FROM AGENTS');
             for (let i = users.rowCount; idCheck === false; i++) {
                 const userNo = String(i).padStart(6, '0');
-                userId = `NASS_AG_${userNo}`;
+                userId = `NASS_${shortForm}_${userNo}`;
                 const dbCheck = await db.query('SELECT * FROM AGENTS WHERE agent_id = $1', [userId]);
                 if (dbCheck.rowCount === 0) {
                     idCheck = true;

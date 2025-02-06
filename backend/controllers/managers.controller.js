@@ -9,7 +9,7 @@ export const getList = async(req,res) => {
     if(type.type === 'Head Managers'){
         managersList = await db.query('SELECT MANAGER_ID, NAME FROM MANAGERS')
     }else{
-        managersList = await db.query(`SELECT AGENT_ID, NAME FROM AGENTS`)
+        managersList = await db.query(`SELECT AGENT_ID, NAME FROM AGENTS WHERE user_type = 'Sale Manager'`)
     }
     if(managersList.rowCount === 0){
         console.error('Unable to read managers from database', error);

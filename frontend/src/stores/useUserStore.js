@@ -23,7 +23,9 @@ export const useUserStore = create((set) => ({
                 credentials: "include",
             })
             if(!response.ok){
-                console.log(response)
+                const errorMessage = await response.json()
+                console.log(errorMessage)
+                set({error: errorMessage, loading: false})
                 throw new Error('Failed to submit form, ',response)
             }
             const responseData = await response.json();

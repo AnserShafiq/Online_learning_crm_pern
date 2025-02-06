@@ -1,6 +1,6 @@
 import {motion} from 'framer-motion'
-import { useEffect, useState } from 'react';
-import {Building2, LockKeyholeOpen, Mail, Shapes, User, UserPlus, Users} from 'lucide-react'
+import { useEffect, useRef, useState } from 'react';
+import {Building2, Eye, EyeOff, LockKeyholeOpen, Mail, Shapes, User, UserPlus, Users} from 'lucide-react'
 import { useUserStore } from '../stores/useUserStore.js'
 import { useGetData } from '../stores/useGetData.js';
 const Signin = () => {
@@ -11,8 +11,14 @@ const Signin = () => {
         gettingHeadManagers, 
         gettingCompanies
     } = useGetData();
+
+    const passOneRef = useRef(null)
+    const passTwoRef = useRef(null)
+    const [showPassOne, setShowPassOne] = useState(false);
+    const [showPassTwo, setShowPassTwo] = useState(false);
+    const [passwordCheck, setPasswordCheck] = useState(false)
     const [usertype, setUserType] = useState('')
-    const {signup} = useUserStore();
+    const {signup, error} = useUserStore();
 
     useEffect(()=> {
         if(usertype === 'Sale Manager'){
@@ -32,6 +38,15 @@ const Signin = () => {
         'Accountant',
         'Clerk'
     ]
+    const handlePassword = async(e) => {
+        e.preventDefault();
+        if(passOneRef.current.value !== passTwoRef.current.value){
+            setPasswordCheck(true)
+        }
+        else{
+            setPasswordCheck(false)
+        }
+    }
     const handleSubmission = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target)
@@ -89,17 +104,41 @@ const Signin = () => {
                     </div>
                     <input className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" type='email' placeholder="Agent's Email..." name='email' id='email' required/>
                 </div>
+                { error !==null && error.reason === 'Email' && <h3 className='text-md text-red-500 mt-1'>{error.message}</h3>}
             </div>
 
             <div className="flex flex-col relative rounded-md shadow-sm">
-                <label className='block text-sm font-medium text-gray-300'>Profile Password</label>
+                <label className='block text-sm font-medium text-gray-300'>Password</label>
                 <div className='relative rounded-md shadow-sm '>
                     <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
                         <LockKeyholeOpen className='h-5 w-5 text-gray-400'/>
                     </div>
-                    <input className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" type='text' placeholder="Password..." name='password' id='password' required/>
+                    <input ref={passOneRef} className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" 
+                    type={showPassOne ? 'text':'password'} placeholder="Password..." name='password' id='password' required/>
+                    <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events'>
+                    {
+                        !showPassOne ? (<EyeOff className='h-5 text-gray-400 cursor-pointer' onClick={() => setShowPassOne(true)}/>):(<Eye className='h-5 text-gray-400 cursor-pointer' onClick={() => setShowPassOne(false)} />)
+                    }
+                    </div>
                 </div>
                 
+            </div>
+            <div className="flex flex-col relative rounded-md shadow-sm">
+                <label className='block text-sm font-medium text-gray-300'>Re-type Password</label>
+                <div className='relative rounded-md shadow-sm '>
+                    <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                        <LockKeyholeOpen className='h-5 w-5 text-gray-400'/>
+                    </div>
+                    <input onChange={handlePassword} ref={passTwoRef} 
+                    className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" 
+                    type={showPassTwo ? 'text':'password'} placeholder="Password..." name='re-password' id='re-password' required/>
+                    <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events'>
+                    {
+                        !showPassTwo ? (<EyeOff className='h-5 text-gray-400 cursor-pointer' onClick={() => setShowPassTwo(true)}/>):(<Eye className='h-5 text-gray-400 cursor-pointer' onClick={() => setShowPassTwo(false)} />)
+                    }
+                    </div>
+                </div>
+                {passwordCheck && <h3 className='text-sm text-red-500'>Password is not valid</h3>}
             </div>            
             <div className="flex flex-col relative rounded-md shadow-sm">
                 <label className='block text-sm font-medium text-gray-300'>User Type</label>
@@ -188,7 +227,7 @@ const Signin = () => {
                                 <option value={''} key={'null'} disabled selected>Select Manager</option>
                                 {
                                     managersList && Array.isArray(managersList) ? managersList.map((manager,index) =>(
-                                        <option key={index} value={manager.manager_id} >{manager.name}</option>
+                                        <option key={index} value={manager.agent_id} >{manager.name}</option>
                                     ) ): null
                                 }
                                 </select>
