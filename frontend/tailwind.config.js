@@ -8,7 +8,12 @@ export default {
     extend: {
       colors:{
         specialColor: '#00ffff',
-      }
+        dull: 'var(--dull-black)',
+      },
+      width: {
+        'container-lg': '1400px',
+        'container-md': '1280px',
+      },
     },
   },
   plugins: [],

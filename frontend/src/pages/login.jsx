@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, CircleUser, CircleX, Loader, Lock, LogIn } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import { useUserStore } from '../stores/useUserStore'
 
 const Login = () => {
     const {login, loading,error} = useUserStore()
-    const handleSubmission = (e) => {
+    const handleSubmission = async(e) => {
         e.preventDefault()
         const formData= new FormData(e.target)
         login(formData)

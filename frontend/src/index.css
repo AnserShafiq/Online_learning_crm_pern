@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+*{
+    --dull-black:rgba(23, 23, 23, 0.508);
+}

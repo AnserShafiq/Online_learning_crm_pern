@@ -5,6 +5,10 @@ import Signin from "./pages/signin"
 import { useUserStore } from "./stores/useUserStore"
 import { useEffect } from "react"
 import Login from "./pages/login"
+import AgentDashboard from "./pages/agents/dashboard"
+import { Suspense } from "react"
+import HMDashboard from "./pages/headmanagers/dashboard"
+
 
 const App = () => {
 
@@ -25,12 +29,27 @@ const App = () => {
 			</div>
 
 			<div className='relative z-50 pt-20'>
-        <Navbar user={user}/>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={!user? <Login />: <Navigate to='/'/>} />
-          <Route path='/signin' element={!user? <Signin />: <Navigate to='/'/>} />
-        </Routes>
+        <Navbar />
+        <div className="w-full flex items-center justify-center">
+          <div className="flex items-center justify-center lg:w-container-md xl:w-container-lg px-4">
+            <Suspense fallback={<h3>Loading...</h3>}>
+              <Routes>
+                <Route 
+                  path='/' 
+                  element={
+                    !user ? <Home /> : user.user_type === 'Head Manager' ? <Navigate to='/hm/dashboard' /> : <Navigate to='/user/dashboard' />
+                  } 
+                />
+
+                <Route path='/login' element={!user? <Login />: <Navigate to='/'/>} />
+                <Route path='/signin' element={!user? <Signin />: <Navigate to='/'/>} />
+                <Route path='/user/dashboard' element={user && user.user_type !== 'Head Manager' ?<AgentDashboard />: <Navigate to={'/'}/>} />
+                <Route path='/hm/dashboard' element={user && user.user_type === 'Head Manager' ?<HMDashboard />: <Navigate to={'/'}/>} />
+              </Routes>
+            </Suspense>
+          </div>
+
+        </div>
       </div>
     </div>
   )

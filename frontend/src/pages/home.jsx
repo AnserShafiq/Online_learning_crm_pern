@@ -8,7 +8,7 @@ const Home = () => {
     checkAuth()
   },[checkAuth])
   return (
-    <div>
+    <div className="w-full">
       <h3 className="text-3xl text-specialColor">Website&apos;s Home</h3>
       {
         user && <>

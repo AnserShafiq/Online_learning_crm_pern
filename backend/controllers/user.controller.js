@@ -132,9 +132,10 @@ export const logIn = async (req, res) => {
         let userLogin;
         const userData = req.body;
         // console.log('User getting Logged in==> ', userData);
+        
         // For Sale Managers
+        userData.username = userData.username.toUpperCase();
         if(userData.username.includes('NASS_MN_')){
-            // console.log('Checking in managers')
             userLogin = await db.query(`SELECT * FROM MANAGERS WHERE manager_id=$1`, [userData.username]);
             if(userLogin.rowCount===0){
                 console.log('Rows count zero');
