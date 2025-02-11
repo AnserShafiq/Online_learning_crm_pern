@@ -21,12 +21,14 @@ const Signin = () => {
     const {signup, error} = useUserStore();
 
     useEffect(()=> {
-        if(usertype === 'Sale Manager'){
+        if(usertype === 'Head Manager'){
+            gettingCompanies('HM')
+        }else if(usertype === 'Sale Manager'){
             gettingHeadManagers()
-        }else if(usertype === 'Head Manager'){
-            gettingCompanies()
+            gettingCompanies('SM')
         }else{
             gettingManagers()
+            gettingCompanies();
         }
     },
     [gettingManagers,gettingHeadManagers, usertype,gettingCompanies])
@@ -162,28 +164,6 @@ const Signin = () => {
                 usertype === 'Head Manager' ? (
                     <>
                         <div className="flex flex-col relative rounded-md shadow-sm">
-                            <label className='block text-sm font-medium text-gray-300'>Company/+ies to allot</label>
-                            <div className='w-full py-2 px-4 bg-gray-700 rounded-md shadow-md mt-1'>
-                                {
-                                     Array.isArray(companiesList) && companiesList.length >0 ? (
-                                        <div className='grid grid-cols-[1fr,1fr,1fr] text-gray-200 w-full'>
-                                            {companiesList.map((company) => (
-
-                                            <label key={company.company_id} className='flex items-start cursor-pointer my-1'>
-                                                <input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id={company.company_id} value={company.company_id} /> 
-                                                <span className='ml-2'>
-                                                    {company.name}
-                                                </span>
-                                            </label>        
-                                            ))}
-                                        </div>
-                                        ):(
-                                        <h3 className=' text-gray-400'>No Company Available</h3>
-                                    )
-                                }
-                            </div>  
-                        </div>
-                        <div className="flex flex-col relative rounded-md shadow-sm">
                             <label className='block text-sm font-medium text-gray-300'>Contact Number</label>
                             <div className='relative rounded-md shadow-sm '>
                                 <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
@@ -193,22 +173,6 @@ const Signin = () => {
                             </div>
                             
                         </div>          
-                        {/* <div className="flex flex-col relative rounded-md shadow-sm">
-                            <label className='block text-sm font-medium text-gray-300'>Head Manager</label>
-                            <div className='relative rounded-md shadow-sm '>
-                                <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                                    <Users className='h-5 w-5 text-gray-400'/>
-                                </div>
-                                <select name="manager" className="text-black block w-full py-2 px-3 pl-10 bg-gray-700 text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="manager" required>
-                                <option value={''} disabled selected>Select Manager</option>
-                                {
-                                    managersList && Array.isArray(managersList) ? managersList.map((manager) =>(
-                                        <option value={manager.manager_id} key={manager.manager_id}>{manager.name}</option>
-                                    ) ): null
-                                }
-                                </select>
-                            </div>    
-                        </div> */}
                     </>      
                 ) : (
                     null
@@ -233,23 +197,57 @@ const Signin = () => {
                                 </select>
                             </div>    
                         </div>
-                        <div className="flex flex-col relative rounded-md shadow-sm">
-                            <label className='block text-sm font-medium text-gray-300'>Company Allotted</label>
-                            <div className='relative rounded-md shadow-sm '>
-                                <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                                    <Building2 className='h-5 w-5 text-gray-400'/>
-                                </div>
-                                <select name='assigned' className="text-black block w-full py-2 px-3 pl-10 bg-gray-700  text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="assigned" >
-                                    <option value={''} disabled selected>Select Option</option>
-                                    <option value={'One'}>One</option>
-                                    <option value={'Two'}>Two</option>
-                                    <option value={'Three'}>Three</option>
-                                    <option value={'Four'}>Four</option>
-                                    <option value={'Five'}>Five</option>
-                                </select>
-                            </div>
-                        </div>
                     </>
+                ):(null)
+            }
+            {
+                usertype !== 'Head Manager' && usertype !== 'Sale Manager' && usertype !== '' ? (
+                    <div className="flex flex-col relative rounded-md shadow-sm">
+                        <label className='block text-sm font-medium text-gray-300'>Company To Allot</label>
+                        <div className='relative rounded-md shadow-sm '>
+                            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                                <Building2 className='h-5 w-5 text-gray-400'/>
+                            </div>
+                            <select name='assigned' className="text-black block w-full py-2 px-3 pl-10 bg-gray-700  text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="assigned" >
+                                <option value={''} disabled selected>Select Option</option>
+                                {
+                                    Array.isArray(companiesList) && companiesList.length > 0 ? (
+                                        companiesList.map((company, index) => 
+                                            <option key={index} value={company.company_id}>{company.name}</option>
+                                        )
+                                    ):(
+                                        <h3>No company in option</h3>
+                                    )
+                                }
+                            </select>
+                        </div>
+                    </div>
+                ):(null)
+            }
+            {
+                usertype ==='Head Manager' || usertype === 'Sale Manager' ? (
+                    <div className="flex flex-col relative rounded-md shadow-sm">
+                        <label className='block text-sm font-medium text-gray-300'>Company/+ies to allot</label>
+                        <div className='w-full py-2 px-4 bg-gray-700 rounded-md shadow-md mt-1'>
+                            {
+                                    Array.isArray(companiesList) && companiesList.length >0 ? (
+                                    <div className='grid grid-cols-[1fr,1fr,1fr] text-gray-200 w-full'>
+                                        {companiesList.map((company) => (
+
+                                        <label key={company.company_id} className='flex items-start cursor-pointer my-1'>
+                                            <input type='checkbox' className='rounded-sm mt-[0.45rem]' name='companies' id={company.company_id} value={company.company_id} /> 
+                                            <span className='ml-2'>
+                                                {company.name}
+                                            </span>
+                                        </label>        
+                                        ))}
+                                    </div>
+                                    ):(
+                                    <h3 className=' text-gray-400'>No Company Available</h3>
+                                )
+                            }
+                        </div>  
+                    </div>
                 ):(null)
             }
 

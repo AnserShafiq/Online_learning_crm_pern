@@ -36,6 +36,16 @@ const setCookies = (res, accessToken, refreshToken) => {
     });
 };
 
+const AddCompanies = async(userId, Companies, type) => {
+    const db = await connectDB()
+    for(let i=0;i < Companies.length && type=== 'HM'; i++){
+        await db.query(`UPDATE COMPANIES SET HM_ID=$1 WHERE COMPANY_ID=$2`,[userId, Companies[i]])
+    }
+    for(let i=0;i < Companies.length && type=== 'SM'; i++){
+        await db.query(`UPDATE COMPANIES SET SM_ID=$1 WHERE COMPANY_ID=$2`,[userId, Companies[i]])
+    }
+}
+
 // Signup function
 export const signup = async (req, res) => {
     const UserProfile = req.body;
@@ -67,9 +77,7 @@ export const signup = async (req, res) => {
             `INSERT INTO Managers(manager_id, name, email, password,contact_number, gender, created_on, user_type) VALUES($1,$2,$3,$4,$5,$6,NOW(),$7);`,
             [userId, UserProfile.name, UserProfile.email, decryptedPassword, UserProfile.contact_number, UserProfile.gender, 'Head Manager']);
 
-            for(let i=0;i < UserProfile.companies.length; i++){
-                await db.query(`UPDATE COMPANIES SET MANAGER_ID=$1 WHERE COMPANY_ID=$2`,[userId, UserProfile.companies[i]])
-            }
+            AddCompanies(userId, UserProfile.companies, "HM")
 
             user = await db.query('SELECT * FROM MANAGERS WHERE manager_id=$1', [userId]);
         }
@@ -104,6 +112,9 @@ export const signup = async (req, res) => {
                 'INSERT INTO AGENTS(agent_id, name, gender, email, assigned_company, manager_id, password, created_on, user_type) VALUES($1,$2,$3,$4,$5,$6,$7,NOW(),$8);',
                 [userId, UserProfile.name, UserProfile.gender, UserProfile.email, UserProfile.assigned, UserProfile.manager, decryptedPassword,UserProfile.usertype]
             );
+            if(shortForm === 'SM'){
+                AddCompanies(userId, UserProfile.companies, "SM")
+            }
             user = await db.query('SELECT * FROM AGENTS WHERE agent_id=$1', [userId]);
         }
         
@@ -133,7 +144,7 @@ export const logIn = async (req, res) => {
         const userData = req.body;
         // console.log('User getting Logged in==> ', userData);
         
-        // For Sale Managers
+        // For Head Managers
         userData.username = userData.username.toUpperCase();
         if(userData.username.includes('NASS_MN_')){
             userLogin = await db.query(`SELECT * FROM MANAGERS WHERE manager_id=$1`, [userData.username]);
@@ -191,11 +202,11 @@ export const logIn = async (req, res) => {
 
 export const getUserProfile = async (req, res) => {
     try{
-        console.log('Getting user profile')
+        // console.log('Getting user profile')
         let user;
         const db = await connectDB();
         const UserID = req.userId
-        console.log('From Get Function => ',UserID)
+        // console.log('From Get Function => ',UserID)
         if(UserID.includes('NASS_MN_')){
             user = await db.query('SELECT * FROM MANAGERS WHERE manager_id=$1', [UserID]);
         }
@@ -218,3 +229,22 @@ export const logout = (req, res) => {
     res.clearCookie('refreshToken');
     return res.status(200).json({ message: "Logged out successfully" });
 };
+
+export const getManagerOfUser = async(req,res) => {
+    const {managerId, table} = req.body;
+    let manager;
+    if(table === 'SM'){
+        manager = `SELECT * FROM AGENTS WHERE AGENT_ID=$1`
+    }else if(table === 'HM'){
+        manager = `SELECT * FROM MANAGERS WHERE MANAGER_ID=$1`
+    }
+    const db= await connectDB()
+    try{
+        const data = await db.query(manager, [managerId])
+        console.log(data.rows[0])
+        return res.json(data.rows[0]).status(200)
+    }catch(error){
+        console.error('Unable to read from DB',error)
+        return res.json('Unable to get MANAGER').status(401)
+    }
+}

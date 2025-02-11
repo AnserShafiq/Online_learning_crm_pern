@@ -14,11 +14,24 @@ export const getList = async(req,res) => {
     if(managersList.rowCount === 0){
         console.error('Unable to read managers from database', error);
     }
-    return res.json(managersList.rows)
+    return res.json(managersList?.rows)
 }
-export const getCompanies = async(req,res) => {
+export const getCompaniesForManagers = async (req, res) => {
+    const { type } = req.query;
     const db = await connectDB();
-    const companies = await db.query(`SELECT * FROM COMPANIES WHERE MANAGER_ID is null`);
-    return res.json(companies.rows)
-}
-
+    let query = 'SELECT * FROM COMPANIES';
+    
+    if (type === 'HM') {
+        query = 'SELECT * FROM COMPANIES WHERE HM_ID IS NULL';
+    } else if (type === 'SM') {
+        query = 'SELECT * FROM COMPANIES WHERE sm_id IS NULL';
+    }
+    try {
+        const companies = await db.query(query);
+        // console.log('Companies found:', companies.rows);
+        return res.json(companies.rows);
+    } catch (error) {
+        console.error('Error fetching companies:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
