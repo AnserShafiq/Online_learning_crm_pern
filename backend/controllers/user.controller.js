@@ -233,6 +233,7 @@ export const logout = (req, res) => {
 export const getManagerOfUser = async(req,res) => {
     const {managerId, table} = req.body;
     let manager;
+    // console.log('frontend sent===> ', managerId, table)
     if(table === 'SM'){
         manager = `SELECT * FROM AGENTS WHERE AGENT_ID=$1`
     }else if(table === 'HM'){
@@ -241,8 +242,8 @@ export const getManagerOfUser = async(req,res) => {
     const db= await connectDB()
     try{
         const data = await db.query(manager, [managerId])
-        console.log(data.rows[0])
-        return res.json(data.rows[0]).status(200)
+        // console.log("==> ",data.rows[0])
+        return res.json(data.rows[0])
     }catch(error){
         console.error('Unable to read from DB',error)
         return res.json('Unable to get MANAGER').status(401)

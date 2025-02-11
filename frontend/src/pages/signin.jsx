@@ -191,7 +191,7 @@ const Signin = () => {
                                 <option value={''} key={'null'} disabled selected>Select Manager</option>
                                 {
                                     managersList && Array.isArray(managersList) ? managersList.map((manager,index) =>(
-                                        <option key={index} value={manager.agent_id} >{manager.name}</option>
+                                        <option key={index} value={manager.agent_id || manager.manager_id} >{manager.name}</option>
                                     ) ): null
                                 }
                                 </select>
