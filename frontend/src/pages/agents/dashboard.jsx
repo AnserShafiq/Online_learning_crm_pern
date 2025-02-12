@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "../../stores/useUserStore";
 import UserDetails from "../../component/userdetails";
 import {useNavigate} from 'react-router-dom';
+import LectureOne from "../../component/Lectures/One";
 
 const AgentDashboard = () => {
     const {checkAuth} = useUserStore();
@@ -70,7 +71,9 @@ const AgentDashboard = () => {
       )}
     </div>
 
+      <LectureOne />
       <UserDetails />
+
     </div>
   )
 }
