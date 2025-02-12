@@ -9,6 +9,7 @@ export const useGetData = create((set)=> ({
     gettingManager: async(managerId,table) => {
         set({loading: true});
         // console.log('Data from user=> ', managerId, table)
+        if(table){
         try {
             const response = await fetch('http://localhost:4600/managers/details',{
                 method:'POST',
@@ -25,6 +26,7 @@ export const useGetData = create((set)=> ({
         } catch (error) {
             console.error(`Unable to get user's manager, `, error)
         }
+    }
     },
     gettingManagers: async() => {
         set({loading:true});

@@ -8,7 +8,7 @@ const UserDetails = () => {
   useEffect(() => {
     if(user.user_type === 'Sale Manager'){
       gettingManager(user.manager_id, 'HM')
-    }else{
+    }else if(user!== null){
       gettingManager(user.manager_id, 'SM')
     }
   }, [gettingManager,user])
