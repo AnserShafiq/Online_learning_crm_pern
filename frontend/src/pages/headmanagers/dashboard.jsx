@@ -10,8 +10,14 @@ const HMDashboard = () => {
     const handleFileUpload = (e) => {
       e.preventDefault();
       const fileRead = e.target.files[0]
-      console.log(fileRead)
+      setFile(fileRead)
     }
+    useEffect(() => {
+      if (file) {
+        console.log(file); // Logs the updated file after state change
+      }
+    }, [file]);
+    
   return (
     <div className='flex flex-col w-full gap-1'>
       <h3>Welcome Manager,  {user?.name}</h3>
