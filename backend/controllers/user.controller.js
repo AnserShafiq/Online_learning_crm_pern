@@ -49,7 +49,7 @@ const AddCompanies = async(userId, Companies, type) => {
 // Signup function
 export const signup = async (req, res) => {
     const UserProfile = req.body;
-    console.log('User => ', UserProfile)
+    // console.log('User => ', UserProfile)
     try {
         const db = await connectDB();
         if (!db) throw new Error("Database connection failed");
@@ -110,10 +110,12 @@ export const signup = async (req, res) => {
             }
             await db.query(
                 'INSERT INTO AGENTS(agent_id, name, gender, email, assigned_company, manager_id, password, created_on, user_type) VALUES($1,$2,$3,$4,$5,$6,$7,NOW(),$8);',
-                [userId, UserProfile.name, UserProfile.gender, UserProfile.email, UserProfile.assigned, UserProfile.manager, decryptedPassword,UserProfile.usertype]
+                [userId, UserProfile.name, UserProfile.gender, UserProfile.email, UserProfile.assigned_company, UserProfile.manager, decryptedPassword,UserProfile.usertype]
             );
             if(shortForm === 'SM'){
                 AddCompanies(userId, UserProfile.companies, "SM")
+            }else{
+                await db.query('INSERT INTO ONLINE_TIMER(agent_id) VALUES($1)',[userId])
             }
             user = await db.query('SELECT * FROM AGENTS WHERE agent_id=$1', [userId]);
         }
@@ -153,7 +155,7 @@ export const logIn = async (req, res) => {
                 return res.status(401).json({ message: 'Invalid user id or password' }); // Return to stop further execution    
             }
             const passCheck = bcrypt.compareSync(userData.password, userLogin.rows[0].password);
-            console.log(passCheck);
+            // console.log(passCheck);
 
             if (!passCheck) {
                 console.log('User wrong');

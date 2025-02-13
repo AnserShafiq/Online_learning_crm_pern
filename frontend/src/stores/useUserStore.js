@@ -1,16 +1,15 @@
 import { create } from 'zustand';
 
-export const useUserStore = create((set) => ({
+export const useUserStore = create((set,get) => ({
     user:null,
     loading: false,
     error:null,
     checkingAuth: true,
-    
+    timer: 0,
     signup: async(data)=>{
         set({loading:true});
-        const dataTwo = Object.fromEntries(data.entries()); 
-        dataTwo.assigned = [...data.getAll("assigned")]; 
-        dataTwo.companies = [...data.getAll("companies")]
+        const dataTwo = Object.fromEntries(data.entries());
+        dataTwo.companies = [...data.getAll("companies")];
         console.log('Data From User Store=> ',dataTwo)
         try{
             const response = await fetch('http://localhost:4600/new-user',{
@@ -80,7 +79,41 @@ export const useUserStore = create((set) => ({
             set({checkingAuth: false, user:null})
         }
     },
+    timeSpent: async() => {
+        set({loading: true})
+        const {user} = get()
 
+        if(user){
+            // console.log('By using get',user)
+            const response = await fetch('http://localhost:4600/agents/timespent',{
+                method:'POST',
+                credentials:'include',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({agent_id: user?.agent_id})
+            })
+            const time = await response.json()
+            set({timer: time.timer, loading:false})
+            // console.log('Timer ==>', time)
+        }
+    },
+    updateTimeSpent: async(time) => {
+        // const {user} = get()
+        // const response = await fetch('http://localhost:4600/agents/time-update',{
+        //     method:'POST',
+        //     credentials:'include',
+        //     headers:{
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({newtime: time, agent_id: user.agent_id})
+        // })
+        //     if(response.ok){
+        //         console.log('TIme Updated')
+        //     }
+        console.log('Hello ==> ',time)
+        set({timer: time})
+    },
     logout: async() => {
         try{
             await fetch('http://localhost:4600/logout',{

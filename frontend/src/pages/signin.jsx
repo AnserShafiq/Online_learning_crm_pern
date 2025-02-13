@@ -208,7 +208,7 @@ const Signin = () => {
                             <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
                                 <Building2 className='h-5 w-5 text-gray-400'/>
                             </div>
-                            <select name='assigned' className="text-black block w-full py-2 px-3 pl-10 bg-gray-700  text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="assigned" >
+                            <select name='assigned_company' className="text-black block w-full py-2 px-3 pl-10 bg-gray-700  text-gray-200 placeholder-gray-400 border border-gray-600 rounded-md shadow-md mt-1 focus:outline-none focus:border-emerald-500 focus:ring-emerald-500" id="assigned_company" >
                                 <option value={''} disabled selected>Select Option</option>
                                 {
                                     Array.isArray(companiesList) && companiesList.length > 0 ? (

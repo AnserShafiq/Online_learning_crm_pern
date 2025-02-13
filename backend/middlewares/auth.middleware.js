@@ -5,7 +5,7 @@ dotenv.config();
 
 const authenticateUser = async (req, res, next) => {
     const token = await req.cookies.accessToken;
-    console.log('Cookies =>', token )
+    // console.log('Cookies =>', token )
     if (!token) {
         console.log('Going to send no token message')
         return res.status(401).json({ message: "Unauthorized: No token provided" });
@@ -19,7 +19,7 @@ const authenticateUser = async (req, res, next) => {
         req.userId = decoded.userId;
         next();
     });
-    console.log('req.userId=> ',req.userId)
+    // console.log('req.userId=> ',req.userId)
 };
 
 export default authenticateUser;

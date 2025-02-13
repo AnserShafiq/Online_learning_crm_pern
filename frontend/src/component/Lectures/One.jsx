@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ArrowLeft, ArrowRight, MoveLeft }from 'lucide-react'
+import { ArrowLeft, ArrowRight}from 'lucide-react'
 const Sections = [
     {
         h1Head: 'Lecture on The Private Security and Investigative Services Act (PSISA)',
@@ -62,15 +62,15 @@ export default function LectureOne() {
         setIndex(prevIndex => (prevIndex === Steps.length - 1 ? 0 : prevIndex + 1));
     };
     return(
-        <div className="relative w-full p-14 h-[700px] max-h-[700px] border-2">
+        <div className="relative w-full p-14 h-[700px] max-h-[700px] border">
             <h5>{index}</h5>
             
-            <div className="border-2 h-[700px] max-h-[500px] w-full">
+            <div className=" h-[700px] max-h-[500px] w-full">
                 {Steps[index]}
             </div>
-            <div className="absolute bottom-0 left-0 px-14 flex flex-row w-full justify-between border-2">
-                <button className="inline-flex gap-1 items-center justify-center border-2 border-transparent px-4 py-1 bg-emerald-700 rounded-md hover:border-2 hover:border-emerald-600 hover:text-emerald-600 hover:bg-gray-100 hover:font-bold transition-transform ease-in-out duration-600" onClick={decreaseIndex}> <ArrowLeft className="h-5"/> Prev</button>
-                <button className="inline-flex gap-1 items-center justify-center border-2 border-transparent px-4 py-1 bg-emerald-700 rounded-md hover:border-2 hover:border-emerald-600 hover:text-emerald-600 hover:bg-gray-100 hover:font-bold transition-transform ease-in-out duration-600" onClick={increaseIndex}> Next<ArrowRight className="h-5"/></button>
+            <div className="absolute bottom-0 left-0 px-14 flex flex-row w-full justify-between ">
+                <button className="text-md inline-flex gap-1 items-center justify-center border-b-2 py-[0.75px] border-emerald-700 hover:border-gray-300 text-emerald-600 hover:text-gray-300 transition-transform ease-in-out duration-600" onClick={decreaseIndex}> <ArrowLeft className="h-5"/> Prev</button>
+                <button className="text-md inline-flex gap-1 items-center justify-center border-b-2 py-[0.75px] border-emerald-700 hover:border-gray-300 text-emerald-600 hover:text-gray-300 transition-transform ease-in-out duration-600" onClick={increaseIndex}> Next<ArrowRight className="h-5"/></button>
             </div>
         </div>
     )

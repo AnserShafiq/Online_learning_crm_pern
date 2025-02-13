@@ -36,7 +36,7 @@ export const useGetData = create((set)=> ({
                 credentials:'include',
             })
             const managers = await response.json()
-            console.log('Managers list=> ', managers)
+            // console.log('Managers list=> ', managers)
             set({managersList:managers, loading:false})
 
         } catch (error) {
@@ -51,7 +51,7 @@ export const useGetData = create((set)=> ({
                 credentials:'include'
             })
             const managers = await response.json()
-            console.log('Managers list=> ', managers)
+            // console.log('Managers list=> ', managers)
             set({managersList:managers, loading:false})
 
         } catch (error) {
@@ -79,7 +79,7 @@ export const useGetData = create((set)=> ({
                 })
             }
             const companies = await response.json()
-            console.log('Companies available => ', companies)
+            // console.log('Companies available => ', companies)
             set({companiesList: companies, loading: false})
 
         }catch(error){
