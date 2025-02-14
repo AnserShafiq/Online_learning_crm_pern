@@ -1,10 +1,11 @@
 import { connectDB } from "../lib/db.js"
 
+let db=connectDB()
 
 export const getList = async(req,res) => {
     const type = req.query;
     console.log('Requested managers type => ',type);
-    const db = await connectDB()
+    
     let managersList ;
     if(type.type === 'Head Managers'){
         managersList = await db.query('SELECT MANAGER_ID, NAME FROM MANAGERS')
@@ -18,7 +19,8 @@ export const getList = async(req,res) => {
 }
 export const getCompaniesForManagers = async (req, res) => {
     const { type } = req.query;
-    const db = await connectDB();
+    
+
     let query = 'SELECT * FROM COMPANIES';
     
     if (type === 'HM') {

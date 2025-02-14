@@ -97,22 +97,21 @@ export const useUserStore = create((set,get) => ({
             set({timer: time.timer, loading:false})
             // console.log('Timer ==>', time)
         }
-    },
-    updateTimeSpent: async(time) => {
-        // const {user} = get()
-        // const response = await fetch('http://localhost:4600/agents/time-update',{
-        //     method:'POST',
-        //     credentials:'include',
-        //     headers:{
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({newtime: time, agent_id: user.agent_id})
-        // })
-        //     if(response.ok){
-        //         console.log('TIme Updated')
-        //     }
-        console.log('Hello ==> ',time)
-        set({timer: time})
+    },updateTimer: async(newtime)=> {
+        // console.log('Updated Time => ', newtime);
+        const {user} = get()
+        const response = await fetch('http://localhost:4600/agents/timeupdate',{
+            method:'POST',
+            credentials:'include',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({agent_id: user?.agent_id, time: newtime})
+        })
+        if(response.ok){
+            set({timer: newtime})
+        }
+        
     },
     logout: async() => {
         try{

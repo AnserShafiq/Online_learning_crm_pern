@@ -5,5 +5,5 @@ const router = express.Router()
 
 router.get('/companies', getCompaniesForAgents);
 router.post('/timespent', getTimeSpent);
-router.post('/time-update', updateTimeSpent)
+router.post('/timeupdate', updateTimeSpent)
 export default router

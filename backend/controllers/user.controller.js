@@ -4,6 +4,8 @@ import { connectDB } from "../lib/db.js";
 import bcrypt from 'bcrypt';
 dotenv.config();
 
+let db = connectDB()
+
 // Function to generate JWT tokens
 const generateTokens = (userId) => {
 
@@ -51,7 +53,6 @@ export const signup = async (req, res) => {
     const UserProfile = req.body;
     // console.log('User => ', UserProfile)
     try {
-        const db = await connectDB();
         if (!db) throw new Error("Database connection failed");
 
         let idCheck = false;
@@ -140,7 +141,7 @@ export const adminSignUp = async(req,res) => {
 }
 
 export const logIn = async (req, res) => {
-    const db = await connectDB();
+
     try {
         let userLogin;
         const userData = req.body;
@@ -206,7 +207,7 @@ export const getUserProfile = async (req, res) => {
     try{
         // console.log('Getting user profile')
         let user;
-        const db = await connectDB();
+
         const UserID = req.userId
         // console.log('From Get Function => ',UserID)
         if(UserID.includes('NASS_MN_')){
@@ -232,22 +233,26 @@ export const logout = (req, res) => {
     return res.status(200).json({ message: "Logged out successfully" });
 };
 
-export const getManagerOfUser = async(req,res) => {
-    const {managerId, table} = req.body;
+export const getManagerOfUser = async (req, res) => {
+    const { managerId, table } = req.body;
     let manager;
-    // console.log('frontend sent===> ', managerId, table)
-    if(table === 'SM'){
-        manager = `SELECT * FROM AGENTS WHERE AGENT_ID=$1`
-    }else if(table === 'HM'){
-        manager = `SELECT * FROM MANAGERS WHERE MANAGER_ID=$1`
+
+    if (table === 'SM') {
+        manager = `SELECT * FROM AGENTS WHERE AGENT_ID=$1`;
+    } else if (table === 'HM') {
+        manager = `SELECT * FROM MANAGERS WHERE MANAGER_ID=$1`;
+    } else {
+        return res.status(400).json({ error: 'Invalid table name' });
     }
-    const db= await connectDB()
-    try{
-        const data = await db.query(manager, [managerId])
-        // console.log("==> ",data.rows[0])
-        return res.json(data.rows[0])
-    }catch(error){
-        console.error('Unable to read from DB',error)
-        return res.json('Unable to get MANAGER').status(401)
+    try {
+        const data = await db.query(manager, [managerId]);
+        if (data.rows.length > 0) {
+            return res.status(200).json(data.rows[0]);
+        } else {
+            return res.status(404).json({ error: 'Manager not found' });
+        }
+    } catch (error) {
+        console.error('Unable to read from DB:', error);
+        return res.status(500).json({ error: 'Unable to get MANAGER' });
     }
-}
+};

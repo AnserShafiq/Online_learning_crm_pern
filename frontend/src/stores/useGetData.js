@@ -8,7 +8,7 @@ export const useGetData = create((set)=> ({
     manager:null,
     gettingManager: async(managerId,table) => {
         set({loading: true});
-        // console.log('Data from user=> ', managerId, table)
+        console.log('Data from user=> ', managerId, table)
         if(table){
         try {
             const response = await fetch('http://localhost:4600/managers/details',{

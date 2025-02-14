@@ -3,6 +3,7 @@ import { useUserStore } from "../../stores/useUserStore";
 import UserDetails from "../../component/userdetails";
 // import {useNavigate} from 'react-router-dom';
 import LectureOne from "../../component/Lectures/One";
+import SideMenu from "../../component/sideMenu";
 
 const AgentDashboard = () => {
   
@@ -16,9 +17,7 @@ const AgentDashboard = () => {
     <div className="flex flex-col w-full gap-1">
       <h3>Welcome Agent</h3>
       <div className="grid grid-cols-[20%,80%] gap-0 border">
-        <div className="">
-          Cols 1
-        </div>
+        <SideMenu />
         <div className="">
           <LectureOne />
         </div>
