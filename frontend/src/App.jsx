@@ -43,7 +43,7 @@ const App = () => {
 
                 <Route path='/login' element={!user? <Login />: <Navigate to='/'/>} />
                 <Route path='/signin' element={!user? <Signin />: <Navigate to='/'/>} />
-                <Route path='/user/dashboard' element={user && user.user_type !== 'Head Manager' ?<AgentDashboard />: <Navigate to={'/'}/>} />
+                <Route path='/user/dashboard/*' element={user && user.user_type !== 'Head Manager' ?<AgentDashboard />: <Navigate to={'/'}/>} />
                 <Route path='/hm/dashboard' element={user && user.user_type === 'Head Manager' ?<HMDashboard />: <Navigate to={'/'}/>} />
               </Routes>
             </Suspense>

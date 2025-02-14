@@ -119,7 +119,7 @@ export const useUserStore = create((set,get) => ({
                 method:'POST',
                 credentials: "include",
             })
-            set({user: null})
+            set({user: null, timer: 0})
         }
         catch(error){
             console.error('Error:',error)

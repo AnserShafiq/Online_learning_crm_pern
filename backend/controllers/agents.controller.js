@@ -18,6 +18,7 @@ export const getTimeSpent = async (req, res) => {
         const result = await db.query('SELECT timer FROM online_timer WHERE agent_id = $1', [agent_id]);
 
         const oldTime = result.rows[0] || { timer: 0 };
+        console.log(agent_id,"'s time => ", oldTime)
         return res.status(200).json(oldTime);
     } catch (error) {
         console.error('❌ Error fetching time spent:', error.message);

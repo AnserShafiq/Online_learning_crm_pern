@@ -47,7 +47,7 @@ const SectionTwo = () => {
 }
 
 
-export default function LectureOne() {
+export default function LectureTwo() {
     const [index, setIndex] = useState(0)
     const Steps = [
         <SectionOne key="section-one" />,
@@ -62,12 +62,13 @@ export default function LectureOne() {
         setIndex(prevIndex => (prevIndex === Steps.length - 1 ? 0 : prevIndex + 1));
     };
     return(
-        <div className="relative w-full p-14 h-[750px] max-h-[750px] mb-6">
-            <h5 className="inline-flex gap-1 text-md items-center">Lecture One <ArrowRight className="h-4"/> Page: {index+1}</h5>
+        <div className="relative w-full p-14 h-[700px] max-h-[700px] border">
+            <h5 className="inline-flex gap-1 text-md items-center">Lecture Two <ArrowRight className="h-4"/> Page: {index+1}</h5>
+            
             <div className=" h-[700px] max-h-[500px] w-full">
                 {Steps[index]}
             </div>
-            <div className="absolute bottom-3 left-0 px-14 flex flex-row w-full justify-between ">
+            <div className="absolute bottom-0 left-0 px-14 flex flex-row w-full justify-between ">
                 <button className="text-md inline-flex gap-1 items-center justify-center border-b-2 py-[0.75px] border-emerald-700 hover:border-gray-300 text-emerald-600 hover:text-gray-300 transition-transform ease-in-out duration-600" onClick={decreaseIndex}> <ArrowLeft className="h-5"/> Prev</button>
                 <button className="text-md inline-flex gap-1 items-center justify-center border-b-2 py-[0.75px] border-emerald-700 hover:border-gray-300 text-emerald-600 hover:text-gray-300 transition-transform ease-in-out duration-600" onClick={increaseIndex}> Next<ArrowRight className="h-5"/></button>
             </div>
