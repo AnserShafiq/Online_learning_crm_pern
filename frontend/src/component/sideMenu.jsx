@@ -8,23 +8,27 @@ const SideMenu = () => {
             name: 'Book One',
             active: true,
             link: '/user/dashboard',
+            completed: false,
         },{
             name:'Book Two',
             active: timer > 1200 ? true : false ,
             link: '/user/dashboard/lecture-two',
             timelimit: 1200,
+            completed: false,
         },
         {
             name:'Book Three',
             active: timer > 2400  ? true : false,
             link: '/user/dashboard/lecture-three',
             timelimit: 2400,
+            completed: false,
         },
         {
             name:'Book Four',
             active: timer > 3000 ? true : false,
             link: '/user/dashboard/lecture-four',
             timelimit: 3000,
+            completed: false,
         },
     ]
 

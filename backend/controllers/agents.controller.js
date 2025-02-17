@@ -35,3 +35,15 @@ export const updateTimeSpent = async(req,res) => {
     await db.query('UPDATE ONLINE_TIMER SET TIMER=$1 WHERE AGENT_ID=$2',[time,agent_id])
     return res.json({message: 'Time Updated'}).status(200)
 }
+export const addTestMarks = async(req,res) => {
+    const {agent_id, marks, testNo} = req.body;
+    await db.query(`CREATE TABLE IF NOT EXISTS TEST_REPORTS (
+        AGENT_ID TEXT NOT NULL,
+        TESTNO INT,
+        MARKS INT,
+        DATED TIMESTAMP
+        );`)
+    await db.query(`INSERT INTO TEST_REPORTS(AGENT_ID, TESTNO, MARKS, DATED) VALUES($1,$2,$3, NOW())`,[agent_id, testNo, marks])
+    console.log(marks, testNo)
+    return res.json({message: 'Marks added'}).status(201)
+}

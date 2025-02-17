@@ -30,9 +30,9 @@ const UserDetails = () => {
   useEffect(() => {
     const timeIncrement = setInterval(() => {
       setTimeDisplayed((prev) => prev+1)
-      if(timeDisplay%15 === 0 && timeDisplay > 0){
-        updateTimer(timeDisplay)
-      }
+      // if(timeDisplay%15 === 0 && timeDisplay > 0){
+      //   updateTimer(timeDisplay)
+      // }
       
     }, 1000)
     return () => clearInterval(timeIncrement)

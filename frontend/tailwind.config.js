@@ -14,6 +14,9 @@ export default {
         'container-lg': '1400px',
         'container-md': '1280px',
       },
+      fontSize:{
+        xs: '0.75rem',
+      }
     },
   },
   plugins: [],
