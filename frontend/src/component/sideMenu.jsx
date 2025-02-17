@@ -28,7 +28,6 @@ const SideMenu = () => {
         },
     ]
 
-
   return (
     <div className="flex flex-col gap-2 py-10 w-full overflow-x-auto">
         <h3 className="text-xl capitalize underline underline-offset-4 mb-6">Book options</h3>
